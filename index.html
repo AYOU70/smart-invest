@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>有知有行 - 投资让你过上更好的生活</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.6;
+            padding-bottom: 80px;
+            padding-top: 20px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #86868b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1d1d1f;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 16px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1d1d1f;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .result {
+            background: #f5f5f7;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e5e7;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #86868b;
+            font-size: 14px;
+        }
+
+        .result-value {
+            font-weight: 600;
+            font-size: 16px;
+            color: #1d1d1f;
+        }
+
+        .result-value.highlight {
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .list-item {
+            padding: 16px;
+            border-bottom: 1px solid #f5f5f7;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .list-item:hover {
+            background: #f9f9fa;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1d1d1f;
+        }
+
+        .list-item-subtitle {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 8px;
+        }
+
+        .list-item-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .stat-value.positive {
+            color: #34c759;
+        }
+
+        .stat-value.negative {
+            color: #ff3b30;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        .temperature-meter {
+            height: 8px;
+            background: linear-gradient(90deg, #34c759 0%, #ff9500 50%, #ff3b30 100%);
+            border-radius: 4px;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .temperature-indicator {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: left 0.3s ease;
+        }
+
+        .temperature-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #86868b;
+            margin-top: 8px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .mini-card {
+            background: #f5f5f7;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .mini-card-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1d1d1f;
+        }
+
+        .mini-card-label {
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e5e5e7;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        .knowledge-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .knowledge-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .knowledge-card-content {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f5f5f7;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #86868b;
+            margin-right: 8px;
+        }
+
+        .badge-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .badge-success {
+            background: #34c759;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #ff9500;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            gap: 8px;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #86868b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .account-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        .account-card h3 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .account-card p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #86868b;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f5f5f7;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #86868b;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .chart-container {
+            height: 200px;
+            background: #f5f5f7;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .chart-bar {
+            width: 40px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px 8px 0 0;
+            transition: height 0.5s ease;
+        }
+
+        .chart-label {
+            text-align: center;
+            font-size: 12px;
+            color: #86868b;
+            margin-top: 8px;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #86868b;
+            text-align: center;
+            padding: 20px;
+            border-left: 3px solid #667eea;
+            margin: 20px 0;
+            background: #f5f5f7;
+            padding: 16px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .quote strong {
+            color: #1d1d1f;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 32px 20px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .header-banner p {
+            font-size: 16px;
+            opacity: 0.9;
+            color: white;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f7;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #1d1d1f;
+        }
+
+        .feature-text p {
+            font-size: 13px;
+            color: #86868b;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+        }
+
+        .nav-items {
+            display: flex;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-item-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item-label {
+            font-size: 10px;
+            color: #86868b;
+        }
+
+        .nav-item.active .nav-item-label {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 首页 - 投资第一课 -->
+        <div id="page-home" class="page active">
+            <div class="header-banner">
+                <h1>投资的意义</h1>
+                <p>不是一只基金、一个策略或一笔交易，而是如何通过投资，让我们过上更好的生活</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">今日知识</h2>
+                <div class="knowledge-card" onclick="nextKnowledgeCard()">
+                    <div class="knowledge-card-title" id="knowledge-title">长期主义的力量</div>
+                    <div class="knowledge-card-content" id="knowledge-content">
+                        投资是一场马拉松，而不是百米冲刺。真正成功的投资者，都是长期主义者。他们不会因为短期波动而焦虑，而是关注长期价值。
+                    </div>
+                    <div style="margin-top: 12px; font-size: 12px; opacity: 0.8;">
+                        ← 划一划换一个
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">投资第一课</h2>
+                <div class="card">
+                    <h3>新手必学</h3>
+                    <p class="subtitle">从零开始，系统学习投资知识</p>
+                    <div class="feature-list">
+                        <li>
+                            <div class="feature-icon">1</div>
+                            <div class="feature-text">
+                                <h4>认识投资</h4>
+                                <p>理解投资的本质和意义</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="feature-icon">2</div>
+                            <div class="feature-text">
+                                <h4>资产配置</h4>
+                                <p>学会分散投资，降低风险</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="feature-icon">3</div>
+                            <div class="feature-text">
+                                <h4>价值投资</h4>
+                                <p>寻找被低估的优质资产</p>
+                            </div>
+                        </li>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 16px;" onclick="showPage('learn')">开始学习</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">你的学习进度</h2>
+                <div class="card">
+                    <div class="mini-card-value" id="learning-progress">3/20</div>
+                    <div class="mini-card-label">已完成课程</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 15%;"></div>
+                    </div>
+                    <div style="margin-top: 16px; display: flex; gap: 16px;">
+                        <div style="flex: 1; text-align: center;">
+                            <div class="mini-card-value">12h</div>
+                            <div class="mini-card-label">学习时长</div>
+                        </div>
+                        <div style="flex: 1; text-align: center;">
+                            <div class="mini-card-value">Lv.2</div>
+                            <div class="mini-card-label">认知等级</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="quote">
+                    <strong>芒格说：</strong>我们将公司分为好公司、烂公司和看不懂的公司。看不懂，也是一种结论，往往代表这家公司在我们能力范围之外。
+                </div>
+            </div>
+        </div>
+
+        <!-- 财务工具页面 -->
+        <div id="page-tools" class="page">
+            <div class="header">
+                <h1>财务工具</h1>
+                <p>做自己家庭的CFO</p>
+            </div>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchToolTab('pension')">养老金</div>
+                <div class="nav-tab" onclick="switchToolTab('savings')">存款</div>
+                <div class="nav-tab" onclick="switchToolTab('cashflow')">现金流</div>
+            </div>
+
+            <!-- 养老金计算器 -->
+            <div id="tool-pension" class="tool-content">
+                <div class="card">
+                    <h2>养老金计算器</h2>
+                    <p class="subtitle">规划你的退休生活</p>
+                    
+                    <div class="input-group">
+                        <label>当前年龄</label>
+                        <input type="number" id="pension-current-age" value="30" placeholder="例如：30">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>退休年龄</label>
+                        <input type="number" id="pension-retire-age" value="60" placeholder="例如：60">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>每月储蓄（元）</label>
+                        <input type="number" id="pension-monthly-savings" value="5000" placeholder="例如：5000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>预期年化收益率（%）</label>
+                        <input type="number" id="pension-return-rate" value="8" placeholder="例如：8">
+                    </div>
+                    
+                    <button class="btn" style="width: 100%;" onclick="calculatePension()">计算退休金</button>
+                    
+                    <div id="pension-result" class="result" style="display: none;">
+                        <div class="result-item">
+                            <span class="result-label">储蓄年限</span>
+                            <span class="result-value" id="pension-years">30年</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">总投入</span>
+                            <span class="result-value" id="pension-total-invest">¥1,800,000</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">退休金总额</span>
+                            <span class="result-value highlight" id="pension-total-amount">¥7,341,432</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">投资收益</span>
+                            <span class="result-value" id="pension-profit">¥5,541,432</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 存款计算器 -->
+            <div id="tool-savings" class="tool-content" style="display: none;">
+                <div class="card">
+                    <h2>存款计算器</h2>
+                    <p class="subtitle">计算你的存款收益</p>
+                    
+                    <div class="input-group">
+                        <label>本金（元）</label>
+                        <input type="number" id="savings-principal" value="100000" placeholder="例如：100000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>期限（月）</label>
+                        <input type="number" id="savings-months" value="12" placeholder="例如：12">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>年利率（%）</label>
+                        <input type="number" id="savings-rate" value="3.5" placeholder="例如：3.5">
+                    </div>
+                    
+                    <button class="btn" style="width: 100%;" onclick="calculateSavings()">计算收益</button>
+                    
+                    <div id="savings-result" class="result" style="display: none;">
+                        <div class="result-item">
+                            <span class="result-label">本金</span>
+                            <span class="result-value" id="savings-principal-result">¥100,000</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">利息</span>
+                            <span class="result-value" id="savings-interest">¥3,500</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">到期金额</span>
+                            <span class="result-value highlight" id="savings-total">¥103,500</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 现金流计算器 -->
+            <div id="tool-cashflow" class="tool-content" style="display: none;">
+                <div class="card">
+                    <h2>现金流预估</h2>
+                    <p class="subtitle">了解你的现金流状况</p>
+                    
+                    <div class="input-group">
+                        <label>年度收入（元）</label>
+                        <input type="number" id="cashflow-income" value="300000" placeholder="例如：300000">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>年度支出（元）</label>
+                        <input type="number" id="cashflow-expense" value="200000" placeholder="例如：200000">
+                    </div>
+                    
+                    <button class="btn" style="width: 100%;" onclick="calculateCashflow()">计算现金流</button>
+                    
+                    <div id="cashflow-result" class="result" style="display: none;">
+                        <div class="result-item">
+                            <span class="result-label">年度收入</span>
+                            <span class="result-value" id="cashflow-income-result">¥300,000</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">年度支出</span>
+                            <span class="result-value" id="cashflow-expense-result">¥200,000</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">净现金流</span>
+                            <span class="result-value highlight" id="cashflow-net">¥100,000</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">储蓄率</span>
+                            <span class="result-value" id="cashflow-rate">33.3%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>现金流趋势</h2>
+                    <div class="chart-container">
+                        <div>
+                            <div class="chart-bar" style="height: 80%;"></div>
+                            <div class="chart-label">1月</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 75%;"></div>
+                            <div class="chart-label">2月</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 90%;"></div>
+                            <div class="chart-label">3月</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 85%;"></div>
+                            <div class="chart-label">4月</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 95%;"></div>
+                            <div class="chart-label">5月</div>
+                        </div>
+                        <div>
+                            <div class="chart-bar" style="height: 88%;"></div>
+                            <div class="chart-label">6月</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 市场观察页面 -->
+        <div id="page-market" class="page">
+            <div class="header">
+                <h1>市场观察</h1>
+                <p>平静面对波动，安心投资</p>
+            </div>
+
+            <div class="card">
+                <h2>市场温度计</h2>
+                <p class="subtitle">当前市场估值水平</p>
+                
+                <div class="temperature-meter">
+                    <div class="temperature-indicator" id="temperature-indicator" style="left: 45%;"></div>
+                </div>
+                
+                <div class="temperature-labels">
+                    <span>低估</span>
+                    <span>合理</span>
+                    <span>高估</span>
+                </div>
+                
+                <div class="result" style="margin-top: 20px;">
+                    <div class="result-item">
+                        <span class="result-label">A股整体PE分位</span>
+                        <span class="result-value highlight" id="market-pe-percentile">45%</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">股债性价比</span>
+                        <span class="result-value" id="market-bond-ratio">2.5</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">市场情绪指数</span>
+                        <span class="result-value" id="market-sentiment">中性</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 16px; text-align: center;">
+                    <span class="badge badge-primary">建议：持有</span>
+                    <span class="badge">适合定投</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>知行黑板报</h2>
+                <p class="subtitle">每周更新</p>
+                
+                <div class="list-item">
+                    <div class="list-item-title">本周市场回顾</div>
+                    <div class="list-item-subtitle">2026年4月第1周</div>
+                    <div class="list-item-stats">
+                        <div class="stat">
+                            <span class="stat-value positive">+1.2%</span>
+                            <span class="stat-label">上证指数</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value positive">+0.8%</span>
+                            <span class="stat-label">深证成指</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="list-item">
+                    <div class="list-item-title">核心观点</div>
+                    <div class="list-item-subtitle">长期看好，短期波动</div>
+                    <p style="font-size: 14px; color: #86868b; margin-top: 8px;">
+                        当前市场处于合理估值区间，适合长期投资者继续持有。短期波动属于正常现象，无需过度关注。
+                    </p>
+                </div>
+                
+                <div class="list-item">
+                    <div class="list-item-title">下周关注</div>
+                    <div class="list-item-subtitle">重要事件</div>
+                    <div style="margin-top: 8px;">
+                        <span class="tag">一季度GDP</span>
+                        <span class="tag">美联储会议</span>
+                        <span class="tag">财报季</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>投资观察</h2>
+                <div class="quote">
+                    <strong>长期视角：</strong>真正的投资，是买入优秀公司的股份，与优秀企业共同成长。短期价格的波动，只是市场的噪音。
+                </div>
+            </div>
+        </div>
+
+        <!-- 基金严选页面 -->
+        <div id="page-funds" class="page">
+            <div class="header">
+                <h1>基金严选</h1>
+                <p>从一万多只基金中，严选出几十只</p>
+            </div>
+
+            <div class="card">
+                <h2>筛选条件</h2>
+                
+                <div class="input-group">
+                    <label>基金类型</label>
+                    <select id="fund-type-filter" onchange="filterFunds()">
+                        <option value="all">全部类型</option>
+                        <option value="stock">股票型</option>
+                        <option value="hybrid">混合型</option>
+                        <option value="bond">债券型</option>
+                        <option value="index">指数型</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>收益率排序</label>
+                    <select id="fund-sort-filter" onchange="filterFunds()">
+                        <option value="default">默认</option>
+                        <option value="1y-return">近1年收益率</option>
+                        <option value="3y-return">近3年收益率</option>
+                        <option value="risk">风险等级</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>严选基金列表</h2>
+                <div id="fund-list">
+                    <!-- 基金列表由JS动态生成 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 资产配置页面 -->
+        <div id="page-portfolio" class="page">
+            <div class="header">
+                <h1>资产配置</h1>
+                <p>让怎么投不再犯难</p>
+            </div>
+
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchPortfolioTab('long')">长钱账户</div>
+                <div class="nav-tab" onclick="switchPortfolioTab('stable')">稳钱账户</div>
+                <div class="nav-tab" onclick="switchPortfolioTab('overseas')">海外长钱</div>
+            </div>
+
+            <!-- 长钱账户 -->
+            <div id="portfolio-long" class="portfolio-content">
+                <div class="account-card">
+                    <h3>长钱账户</h3>
+                    <p>适合长期投资（3年以上）</p>
+                    <div style="margin-top: 16px; font-size: 32px; font-weight: 700;">
+                        15.8%
+                    </div>
+                    <div style="font-size: 14px; opacity: 0.9;">
+                        近3年年化收益
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>配置策略</h2>
+                    <p class="subtitle">股债平衡，稳健增长</p>
+                    
+                    <div class="mini-card">
+                        <div class="mini-card-value">60%</div>
+                        <div class="mini-card-label">股票型基金</div>
+                    </div>
+                    
+                    <div class="mini-card" style="margin-top: 12px;">
+                        <div class="mini-card-value">40%</div>
+                        <div class="mini-card-label">债券型基金</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>推荐基金组合</h2>
+                    <div class="list-item">
+                        <div class="list-item-title">易方达蓝筹精选</div>
+                        <div class="list-item-subtitle">混合型 | 张坤</div>
+                        <div class="list-item-stats">
+                            <div class="stat">
+                                <span class="stat-value positive">+18.5%</span>
+                                <span class="stat-label">近1年</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value positive">+52.3%</span>
+                                <span class="stat-label">近3年</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="list-item">
+                        <div class="list-item-title">兴全合润</div>
+                        <div class="list-item-subtitle">混合型 | 谢治宇</div>
+                        <div class="list-item-stats">
+                            <div class="stat">
+                                <span class="stat-value positive">+15.2%</span>
+                                <span class="stat-label">近1年</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value positive">+48.7%</span>
+                                <span class="stat-label">近3年</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 稳钱账户 -->
+            <div id="portfolio-stable" class="portfolio-content" style="display: none;">
+                <div class="account-card" style="background: linear-gradient(135deg, #34c759 0%, #30d158 100%);">
+                    <h3>稳钱账户</h3>
+                    <p>适合中短期（1-3年）</p>
+                    <div style="margin-top: 16px; font-size: 32px; font-weight: 700;">
+                        4.5%
+                    </div>
+                    <div style="font-size: 14px; opacity: 0.9;">
+                        近1年年化收益
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>配置策略</h2>
+                    <p class="subtitle">固收为主，稳健理财</p>
+                    
+                    <div class="mini-card">
+                        <div class="mini-card-value">80%</div>
+                        <div class="mini-card-label">债券型基金</div>
+                    </div>
+                    
+                    <div class="mini-card" style="margin-top: 12px;">
+                        <div class="mini-card-value">20%</div>
+                        <div class="mini-card-label">货币基金</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>推荐基金组合</h2>
+                    <div class="list-item">
+                        <div class="list-item-title">易方达稳健收益</div>
+                        <div class="list-item-subtitle">债券型 | 胡剑</div>
+                        <div class="list-item-stats">
+                            <div class="stat">
+                                <span class="stat-value positive">+4.8%</span>
+                                <span class="stat-label">近1年</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">低风险</span>
+                                <span class="stat-label">风险等级</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 海外长钱 -->
+            <div id="portfolio-overseas" class="portfolio-content" style="display: none;">
+                <div class="account-card" style="background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);">
+                    <h3>海外长钱</h3>
+                    <p>适合全球配置</p>
+                    <div style="margin-top: 16px; font-size: 32px; font-weight: 700;">
+                        12.3%
+                    </div>
+                    <div style="font-size: 14px; opacity: 0.9;">
+                        近3年年化收益
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>配置策略</h2>
+                    <p class="subtitle">QDII基金，全球配置</p>
+                    
+                    <div class="mini-card">
+                        <div class="mini-card-value">50%</div>
+                        <div class="mini-card-label">美股QDII</div>
+                    </div>
+                    
+                    <div class="mini-card" style="margin-top: 12px;">
+                        <div class="mini-card-value">50%</div>
+                        <div class="mini-card-label">港股QDII</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>推荐基金组合</h2>
+                    <div class="list-item">
+                        <div class="list-item-title">易方达纳斯达克100</div>
+                        <div class="list-item-subtitle">QDII | 纳斯达克指数</div>
+                        <div class="list-item-stats">
+                            <div class="stat">
+                                <span class="stat-value positive">+25.6%</span>
+                                <span class="stat-label">近1年</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value positive">+68.9%</span>
+                                <span class="stat-label">近3年</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 个人中心页面 -->
+        <div id="page-profile" class="page">
+            <div class="header">
+                <h1>个人中心</h1>
+                <p>你的投资旅程</p>
+            </div>
+
+            <div class="card">
+                <h2>学习记录</h2>
+                
+                <div class="mini-card">
+                    <div class="mini-card-value">12h</div>
+                    <div class="mini-card-label">学习时长</div>
+                </div>
+                
+                <div style="margin-top: 12px; display: flex; gap: 16px;">
+                    <div style="flex: 1; text-align: center;">
+                        <div class="mini-card-value">3/20</div>
+                        <div class="mini-card-label">已完成课程</div>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div class="mini-card-value">15</div>
+                        <div class="mini-card-label">知识卡片</div>
+                    </div>
+                    <div style="flex: 1; text-align: center;">
+                        <div class="mini-card-value">Lv.2</div>
+                        <div class="mini-card-label">认知等级</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>投资记录</h2>
+                
+                <div class="result-item">
+                    <span class="result-label">资产总额</span>
+                    <span class="result-value highlight">¥523,400</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">总收益</span>
+                    <span class="result-value positive">+¥87,500</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">收益率</span>
+                    <span class="result-value positive">+20.1%</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>学习成就</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span class="badge badge-primary">投资新手</span>
+                    <span class="badge badge-success">理财达人</span>
+                    <span class="badge badge-warning">长期主义者</span>
+                    <span class="badge">学习先锋</span>
