@@ -1,12 +1,12 @@
 {
-  "name": "智投工具",
-  "short_name": "智投",
-  "description": "智能投资工具，实时行情、财务分析、智能选股",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#1a1a2e",
-  "theme_color": "#1a1a2e",
-  "orientation": "portrait",
+  "name": "有知有行",
+  "short_name": "有知有行",“short_name”: 有知有行,
+  "description": "投资让你过上更好的生活 - 投资教育、财务工具、基金严选",
+  "start_url": "/",“start_url”: "/",
+  "display": "standalone",“display”: “standalone”,
+  "background_color": "#f5f5f7",
+  "theme_color": "#667eea",
+  "orientation": "portrait",“orientation”: “portrait”,
   "icons": [
     {
       "src": "icon-192.png",
