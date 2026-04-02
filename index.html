@@ -6,377 +6,141 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a1a2e">
-    <meta name="apple-mobile-web-app-title" content="智投 - 专业股票交易">
-    <title>智投 - 专业股票交易</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
-    <!-- 引入ECharts图表库（画K线用） -->
+    <title>智投 - 价值选股完整版</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #1a1a2e;
-            color: #fff;
-            min-height: 100vh;
-            padding-bottom: 70px;
-        }
-        /* 导航栏样式 */
-        nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background-color: #16213e;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #0f3460;
-            z-index: 100;
-        }
-        .tab-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #a0a0a0;
-            text-decoration: none;
-            font-size: 12px;
-            height: 100%;
-            width: 20%;
-        }
-        .tab-item.active {
-            color: #e94560;
-        }
-        .tab-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-        /* 页面容器 */
-        .page {
-            display: none;
-            padding: 16px;
-            min-height: calc(100vh - 70px);
-        }
-        .page.active {
-            display: block;
-        }
-        /* 选股页面样式 */
-        .filter-card {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .filter-item {
-            flex: 1;
-            min-width: 120px;
-        }
-        .filter-item label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 6px;
-            color: #a0a0a0;
-        }
-        .filter-item input, .filter-item select {
-            width: 100%;
-            padding: 10px;
-            background-color: #0f3460;
-            border: 1px solid #533483;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 16px;
-        }
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background-color: #e94560;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .stock-list {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 16px;
-        }
-        .stock-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid #0f3460;
-            cursor: pointer;
-        }
-        .stock-item:last-child {
-            border-bottom: none;
-        }
-        .stock-info h4 {
-            font-size: 18px;
-            margin-bottom: 6px;
-        }
-        .stock-info p {
-            font-size: 14px;
-            color: #a0a0a0;
-        }
-        .stock-price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #e94560;
-        }
-        /* 大盘页面样式 */
-        .market-card {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .market-name {
-            font-size: 16px;
-            color: #a0a0a0;
-            margin-bottom: 8px;
-        }
-        .market-price {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-        .market-change {
-            font-size: 14px;
-        }
-        .market-change.up {
-            color: #e94560;
-        }
-        .market-change.down {
-            color: #00b42a;
-        }
-        /* 个股详情页样式 */
-        .detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .detail-back {
-            padding: 8px 16px;
-            background-color: #16213e;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-        }
-        .detail-price {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        .detail-change {
-            font-size: 16px;
-            margin-bottom: 16px;
-        }
-        .detail-change.up {
-            color: #e94560;
-        }
-        .detail-change.down {
-            color: #00b42a;
-        }
-        .detail-info {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 16px;
-        }
-        .detail-info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #0f3460;
-        }
-        .detail-info-item:last-child {
-            border-bottom: none;
-        }
-        /* 弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0,0,0,0.8);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background-color: #16213e;
-            border-radius: 12px;
-            padding: 20px;
-            width: 90%;
-            max-width: 400px;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            color: #a0a0a0;
-            font-size: 24px;
-            cursor: pointer;
-        }
+        * {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+        body {font-family:sans-serif;background:#1a1a2e;color:#fff;padding-bottom:70px;}
+        nav {position:fixed;bottom:0;left:0;right:0;height:70px;background:#16213e;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #0f3460;z-index:100;}
+        .tab-item {display:flex;flex-direction:column;align-items:center;color:#a0a0a0;text-decoration:none;font-size:12px;width:20%;height:100%;justify-content:center;}
+        .tab-item.active {color:#e94560;}
+        .tab-icon {font-size:24px;margin-bottom:4px;}
+        .page {display:none;padding:16px;min-height:calc(100vh - 70px);}
+        .page.active {display:block;}
+        .filter-card {background:#16213e;border-radius:12px;padding:16px;margin-bottom:16px;}
+        .filter-row {display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
+        .filter-item {flex:1;min-width:120px;}
+        .filter-item label {display:block;font-size:14px;margin-bottom:6px;color:#a0a0a0;}
+        .filter-item input,.filter-item select {width:100%;padding:10px;background:#0f3460;border:1px solid #533483;border-radius:8px;color:#fff;font-size:16px;}
+        .btn-primary {width:100%;padding:14px;background:#e94560;border:none;border-radius:8px;color:#fff;font-size:18px;font-weight:bold;cursor:pointer;}
+        .stock-list {background:#16213e;border-radius:12px;padding:16px;}
+        .stock-item {display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid #0f3460;cursor:pointer;}
+        .stock-item:last-child {border:none;}
+        .stock-info h4 {font-size:18px;margin-bottom:6px;}
+        .stock-info p {font-size:14px;color:#a0a0a0;}
+        .stock-price {font-size:20px;font-weight:bold;color:#e94560;}
+        .market-card {background:#16213e;border-radius:12px;padding:16px;margin-bottom:12px;}
+        .market-name {font-size:16px;color:#a0a0a0;margin-bottom:8px;}
+        .market-price {font-size:28px;font-weight:bold;margin-bottom:6px;}
+        .market-change.up {color:#e94560;}
+        .market-change.down {color:#00b42a;}
+        .detail-back {padding:8px 16px;background:#16213e;border:none;border-radius:8px;color:#fff;cursor:pointer;margin-bottom:16px;}
+        .detail-price {font-size:36px;font-weight:bold;margin-bottom:8px;}
+        .detail-change.up {color:#e94560;}
+        .detail-change.down {color:#00b42a;}
+        .detail-info {background:#16213e;border-radius:12px;padding:16px;margin-top:16px;}
+        .detail-info-item {display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #0f3460;}
+        .detail-info-item:last-child {border:none;}
+        .modal {display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:200;align-items:center;justify-content:center;}
+        .modal-content {background:#16213e;border-radius:12px;padding:20px;width:90%;max-width:400px;}
+        .modal-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+        .modal-close {background:none;border:none;color:#a0a0a0;font-size:24px;cursor:pointer;}
     </style>
 </head>
-<body><正文>
-    <!-- 持仓页面 -->
-    <div id="portfolioPage" class="page">
-        <h2>我的持仓</h2>
-        <div class="stock-list">
-            <p style="color:#a0a0a0;text-align:center;padding:20px;">暂无持仓数据</p>
-        </div>
-    </div>
+<body>
+<!--持仓-->
+<div id="portfolioPage" class="page">
+    <h2>我的持仓</h2>
+    <div class="stock-list"><p style="color:#a0a0a0;text-align:center;padding:20px;">暂无持仓</p></div>
+</div>
 
-    <!-- 行情页面 -->
-    <div id="marketPage" class="page">
-        <h2>大盘实时行情</h2>
-        <div id="marketList"></div>
-    </div>
+<!--大盘行情-->
+<div id="marketPage" class="page">
+    <h2>大盘实时行情</h2>
+    <div id="marketList"></div>
+</div>
 
-    <!-- 财报页面 -->
-    <div id="financialPage" class="page">
-        <h2>财务报表</h2>
-        <div class="stock-list">
-            <p style="color:#a0a0a0;text-align:center;padding:20px;">请在选股页选择个股查看财报</p>
-        </div>
-    </div>
+<!--财报-->
+<div id="financialPage" class="page">
+    <h2>财务报表</h2>
+    <div class="stock-list"><p style="color:#a0a0a0;text-align:center;padding:20px;">个股详情页查看完整财报</p></div>
+</div>
 
-    <!-- 选股页面 -->
-    <div id="selectionPage" class="page active">
-        <div class="filter-card">
-            <h2>自定义筛选条件</h2>
-            <div class="filter-row">
-                <div class="filter-item">
-                    <label>最大PE</label>
-                    <input type="number" id="maxPe" value="30">
-                </div>
-                <div class="filter-item">
-                    <label>最小ROE(%)</label>
-                    <input type="number" id="minRoe" value="12">
-                </div>
-                <div class="filter-item">
-                    <label>最小毛利率(%)</label>
-                    <input type="number" id="minGross" value="20">
-                </div>
-                <div class="filter-item">
-                    <label>行业</label>
-                    <select id="industry">
-                        <option value="all">全行业</option>
-                        <option value="消费">消费</option>
-                        <option value="科技">科技</option>
-                        <option value="医药">医药</option>
-                    </select>
-                </div>
+<!--选股-->
+<div id="selectionPage" class="page active">
+    <div class="filter-card">
+        <h2>自定义筛选</h2>
+        <div class="filter-row">
+            <div class="filter-item"><label>最大PE</label><input type="number" id="maxPe" value="30"></div>
+            <div class="filter-item"><label>最小ROE(%)</label><input type="number" id="minRoe" value="12"></div>
+            <div class="filter-item"><label>最小毛利率(%)</label><input type="number" id="minGross" value="20"></div>
+            <div class="filter-item"><label>行业</label>
+                <select id="industry">
+                    <option value="all">全行业</option>
+                    <option value="消费">消费</option>
+                    <option value="科技">科技</option>
+                    <option value="医药">医药</option>
+                </select>
             </div>
-            <button class="btn-primary" id="filterBtn">开始筛选</button>
         </div>
-        <div class="stock-list">
-            <h3>筛选结果</h3>
-            <div id="stockResult">
-                <div class="stock-item" onclick="goStockDetail('600660.SH')">
-                    <div class="stock-info">
-                        <h4>福耀玻璃</h4>
-                        <p>600660 | PE: 18.3 | ROE: 19.2%</p>
-                    </div>
-                    <div class="stock-price">¥36.18</div>
-                </div>
-                <div class="stock-item" onclick="goStockDetail('000858.SZ')">
-                    <div class="stock-info">
-                        <h4>五粮液</h4>
-                        <p>000858 | PE: 25.4 | ROE: 24.1%</p>
-                    </div>
-                    <div class="stock-price">¥145.67</div>
-                </div>
-                <div class="stock-item" onclick="goStockDetail('600519.SH')">
-                    <div class="stock-info">
-                        <h4>贵州茅台</h4>
-                        <p>600519 | PE: 28.9 | ROE: 28.5%</p>
-                    </div>
-                    <div class="stock-price">¥1680.00</div>
-                </div>
-                <div class="stock-item" onclick="goStockDetail('000333.SZ')">
-                    <div class="stock-info">
-                        <h4>美的集团</h4>
-                        <p>000333 | PE: 14.5 | ROE: 21.6%</p>
-                    </div>
-                    <div class="stock-price">¥65.32</div>
-                </div>
+        <button class="btn-primary" id="filterBtn">开始筛选</button>
+    </div>
+    <div class="stock-list">
+        <h3>筛选结果</h3>
+        <div id="stockResult">
+            <div class="stock-item" onclick="goStockDetail('600660.SH','福耀玻璃')">
+                <div class="stock-info"><h4>福耀玻璃</h4><p>600660 | PE:18.3 | ROE:19.2%</p></div>
+                <div class="stock-price">¥36.18</div>
+            </div>
+            <div class="stock-item" onclick="goStockDetail('000858.SZ','五粮液')">
+                <div class="stock-info"><h4>五粮液</h4><p>000858 | PE:25.4 | ROE:24.1%</p></div>
+                <div class="stock-price">¥145.67</div>
+            </div>
+            <div class="stock-item" onclick="goStockDetail('600519.SH','贵州茅台')">
+                <div class="stock-info"><h4>贵州茅台</h4><p>600519 | PE:28.9 | ROE:28.5%</p></div>
+                <div class="stock-price">¥1680.00</div>
+            </div>
+            <div class="stock-item" onclick="goStockDetail('000333.SZ','美的集团')">
+                <div class="stock-info"><h4>美的集团</h4><p>000333 | PE:14.5 | ROE:21.6%</p></div>
+                <div class="stock-price">¥65.32</div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 个股详情页面 -->
-    <div id="detailPage" class="page">
-        <div class="detail-header">
-            <button class="detail-back" onclick="backToSelect()">← 返回</button>
+<!--个股详情财报全分析-->
+<div id="detailPage" class="page">
+    <button class="detail-back" onclick="backToSelect()">← 返回选股</button>
+    <div id="detailContent"></div>
+</div>
+
+<!--设置弹窗-->
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>设置</h3>
+            <button class="modal-close" id="closeSettings">&times;</button>
         </div>
-        <div id="detailContent"></div>
-    </div>
-
-    <!-- 设置弹窗 -->
-    <div id="settingsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>设置</h3>
-                <button class="modal-close" id="closeSettings">&times;</button>
+        <div style="padding:16px 0;">
+            <div class="filter-item">
+                <label>Tushare Token</label>
+                <input type="text" id="tushareToken" placeholder="粘贴你的Tushare密钥">
+                <p style="font-size:12px;color:#a0a0a0;margin-top:6px;">tushare.pro 获取</p>
             </div>
-            <div style="padding:16px 0;"><div style="padding:16px 0;">
-                <div class="filter-item">
-                    <label>Tushare Token</label>
-                    <input type="text" id="tushareToken" placeholder="请输入你的Tushare API Token">
-                    <p style="font-size:12px;color:#a0a0a0;margin-top:6px;">前往 https://tushare.pro/ 获取Token</p>
-                </div>
-                <button class="btn-primary" id="saveToken" style="margin-top:16px;">保存</button>
-            </div>
+            <button class="btn-primary" id="saveToken" style="margin-top:16px;">保存</button>
         </div>
     </div>
+</div>
 
-    <!-- 底部导航 -->
-    <nav>
-        <a href="#portfolio" class="tab-item" id="tab-portfolio">
-            <span class="tab-icon">💼</span>
-            <span>持仓</span>
-        </a>
-        <a href="#market" class="tab-item" id="tab-market" onclick="switchTab('market')">
-            <span class="tab-icon">📈</span>
-            <span>行情</span>
-        </a>
-        <a href="#financial" class="tab-item" id="tab-financial">
-            <span class="tab-icon">📊</span>
-            <span>财报</span>
-        </a>
-        <a href="#selection" class="tab-item active" id="tab-selection">
-            <span class="tab-icon">🎯</span>
-            <span>选股</span>
-        </a>
-    </nav>
+<!--底部导航-->
+<nav>
+    <a href="#portfolio" class="tab-item" id="tab-portfolio"><span class="tab-icon">💼</span><span>持仓</span></a>
+    <a href="#market" class="tab-item" id="tab-market"><span class="tab-icon">📈</span><span>大盘</span></a>
+    <a href="#financial" class="tab-item" id="tab-financial"><span class="tab-icon">📊</span><span>财报</span></a>
+    <a href="#selection" class="tab-item active" id="tab-selection"><span class="tab-icon">🎯</span><span>选股</span></a>
+</nav>
 
-    <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
+
