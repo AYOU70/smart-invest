@@ -11,12 +11,15 @@
     <style>
         * {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
         body {font-family:sans-serif;background:#1a1a2e;color:#fff;padding-bottom:70px;}
+        /* 底部导航样式（修复点击态） */
         nav {position:fixed;bottom:0;left:0;right:0;height:70px;background:#16213e;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #0f3460;z-index:100;}
-        .tab-item {display:flex;flex-direction:column;align-items:center;color:#a0a0a0;text-decoration:none;font-size:12px;width:20%;height:100%;justify-content:center;}
-        .tab-item.active {color:#e94560;}
-        .tab-icon {font-size:24px;margin-bottom:4px;}
+        .nav-item {flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#a0a0a0;font-size:12px;height:100%;cursor:pointer;}
+        .nav-item.active {color:#e94560;}
+        .nav-icon {font-size:24px;margin-bottom:4px;}
+        /* 页面容器（修复显示隐藏） */
         .page {display:none;padding:16px;min-height:calc(100vh - 70px);}
         .page.active {display:block;}
+        /* 原有选股样式完全保留 */
         .filter-card {background:#16213e;border-radius:12px;padding:16px;margin-bottom:16px;}
         .filter-row {display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;}
         .filter-item {flex:1;min-width:120px;}
@@ -29,6 +32,7 @@
         .stock-info h4 {font-size:18px;margin-bottom:6px;}
         .stock-info p {font-size:14px;color:#a0a0a0;}
         .stock-price {font-size:20px;font-weight:bold;color:#e94560;}
+        /* 大盘/详情样式 */
         .market-card {background:#16213e;border-radius:12px;padding:16px;margin-bottom:12px;}
         .market-name {font-size:16px;color:#a0a0a0;margin-bottom:8px;}
         .market-price {font-size:28px;font-weight:bold;margin-bottom:6px;}
@@ -48,25 +52,25 @@
     </style>
 </head>
 <body>
-<!--持仓-->
+<!-- 持仓页面 -->
 <div id="portfolioPage" class="page">
     <h2>我的持仓</h2>
-    <div class="stock-list"><p style="color:#a0a0a0;text-align:center;padding:20px;">暂无持仓</p></div>
+    <div class="stock-list"><p style="color:#a0a0a0;text-align:center;padding:20px;">暂无持仓数据</p></div>
 </div>
 
-<!--大盘行情-->
+<!-- 大盘行情页面 -->
 <div id="marketPage" class="page">
     <h2>大盘实时行情</h2>
     <div id="marketList"></div>
 </div>
 
-<!--财报-->
+<!-- 财报页面 -->
 <div id="financialPage" class="page">
     <h2>财务报表</h2>
-    <div class="stock-list"><p style="color:#a0a0a0;text-align:center;padding:20px;">个股详情页查看完整财报</p></div>
+    <div class="stock-list"><p style="color:#a0a0a0;text-align:center;padding:20px;">点击选股结果查看个股完整财报</p></div>
 </div>
 
-<!--选股-->
+<!-- 选股页面（默认激活） -->
 <div id="selectionPage" class="page active">
     <div class="filter-card">
         <h2>自定义筛选</h2>
@@ -108,13 +112,13 @@
     </div>
 </div>
 
-<!--个股详情财报全分析-->
+<!-- 个股详情页面 -->
 <div id="detailPage" class="page">
     <button class="detail-back" onclick="backToSelect()">← 返回选股</button>
     <div id="detailContent"></div>
 </div>
 
-<!--设置弹窗-->
+<!-- 设置弹窗 -->
 <div id="settingsModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -125,19 +129,31 @@
             <div class="filter-item">
                 <label>Tushare Token</label>
                 <input type="text" id="tushareToken" placeholder="粘贴你的Tushare密钥">
-                <p style="font-size:12px;color:#a0a0a0;margin-top:6px;">tushare.pro 获取</p>
+                <p style="font-size:12px;color:#a0a0a0;margin-top:6px;">前往 tushare.pro 获取</p>
             </div>
             <button class="btn-primary" id="saveToken" style="margin-top:16px;">保存</button>
         </div>
     </div>
 </div>
 
-<!--底部导航-->
+<!-- 底部导航（修复点击绑定） -->
 <nav>
-    <a href="#portfolio" class="tab-item" id="tab-portfolio"><span class="tab-icon">💼</span><span>持仓</span></a>
-    <a href="#market" class="tab-item" id="tab-market"><span class="tab-icon">📈</span><span>大盘</span></a>
-    <a href="#financial" class="tab-item" id="tab-financial"><span class="tab-icon">📊</span><span>财报</span></a>
-    <a href="#selection" class="tab-item active" id="tab-selection"><span class="tab-icon">🎯</span><span>选股</span></a>
+    <div class="nav-item" id="nav-portfolio">
+        <span class="nav-icon">💼</span>
+        <span>持仓</span>
+    </div>
+    <div class="nav-item" id="nav-market">
+        <span class="nav-icon">📈</span>
+        <span>大盘</span>
+    </div>
+    <div class="nav-item" id="nav-financial">
+        <span class="nav-icon">📊</span>
+        <span>财报</span>
+    </div>
+    <div class="nav-item active" id="nav-selection">
+        <span class="nav-icon">🎯</span>
+        <span>选股</span>
+    </div>
 </nav>
 
 <script src="app.js"></script>
